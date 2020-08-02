@@ -5,10 +5,8 @@
     configure.py
     create_blueprint.py
     data_types.py
-    encryption.py
     file_operation.py
     Folder_fast_access.py
-    hide_file.py
     Mail_section.py
     operations.py
     process_fast_access.py
@@ -83,16 +81,6 @@
         def __help(self) -> None
         def user_section(self) -> bool
 
-
-## create_blueprint.py
-
-    def create_file() -> None
-    def write(lines: [str]) -> None
-        def remove(string: str) -> str
-                    def rem(string: str) -> str
-    def write_methodes() -> None
-    def get_py_files() -> list
-    def write_files() -> None
 
 
 ## data_types.py
@@ -224,16 +212,6 @@
         def to_config(self) -> config
 
 
-## encryption.py
-
-
-    class encryption
-        def __init__(self) -> None
-        def __get_encryption_code(self) -> dict
-        def encode(self, data: str) -> str
-        def decode(self, data: str) -> str
-
-
 ## file_operation.py
 
 
@@ -266,10 +244,6 @@
         def folder_help(self) -> None
         def __change_folder_status(self) -> None
         def user_section(self) -> bool
-
-
-## hide_file.py
-
 
 
 ## Mail_section.py
