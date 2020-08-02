@@ -7,12 +7,8 @@ Requirement : Python 3
 For doing specific tasks to help reduce work
 
 <i>some new libraries are needed for this script to work<br>
-use following instruction to install those libraries</i>
+use following instruction to install those libraries.They will be installed automatically</i>
 
-```
-pip install pyperclip
-
-```
 
 <u><b>Command List</b></u>
 
