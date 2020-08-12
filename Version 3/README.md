@@ -170,8 +170,6 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
 
     >> ! [site_code]                open website related to the code in browser
     >> ! [search_keyword]           search_keyword will be searched in google and that page will be opened in web browser
-	PRE SAVED
-	>> ! yt [search_keyword]		search_keyword will be searched in youtube and that page will be opened in web browser
 > media
 	>>	add							add new media to watched list
 	>>	show [categoey]				show media saved under the category

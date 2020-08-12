@@ -1,0 +1,10 @@
+[
+    {
+        "Title": "RuntimeBroker",
+        "Location": "RuntimeBroker.exe",
+        "codes": [
+            "rtb",
+            "runtimebroker"
+        ]
+    }
+]
