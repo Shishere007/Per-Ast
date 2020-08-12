@@ -26,6 +26,7 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
     >> show app                     List all process/apps saved for faster access
     >> show folder                  List all folder saved for faster access
 	>> show media					List all media
+    >> show media gui               Open GUI
 	>> show media status			Shows statitics of all media you watched
 > kill                   
     >> kill                         Exit the current section
