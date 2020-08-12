@@ -7,12 +7,6 @@ Requirement : Python 3
 For doing specific tasks to help reduce work
 
 <i>some new libraries are needed for this script to work<br>
-use following instruction to install those libraries</i>
-
-```
-pip install pyperclip
-
-```
 
 <u><b>Command List</b></u>
 
@@ -28,9 +22,9 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
         >>> Eg :- show english      List all items in the folder saved for faster access with keyword 'english'
     >> show reminder                List all pending reminders
     >> show mail                    List all pending e-mails
-    >> show sitelist                List all sites saved for faster access
-    >> show processlist             List all process/apps saved for faster access
-    >> show folderlist              List all folder saved for faster access
+    >> show site                    List all sites saved for faster access
+    >> show app                     List all process/apps saved for faster access
+    >> show folder                  List all folder saved for faster access
 	>> show media					List all media
 	>> show media status			Shows statitics of all media you watched
 > kill                   
@@ -52,6 +46,7 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
 > configure / configure				open configuration panel
 > config gui						open configuration panel GUI mode
 
+> con?                              Check if interconnection is available
 > quit / exit                       Exit the application/script
 > play [type] [filename]            play the media file  ### DISABLED
 > path                              Show current path
@@ -107,7 +102,7 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
 
 
     ### Save websites with codes for faster access of these websites  ###
-> sitelist/site_list                
+> sitelist/site_list/site                
     >> sitelist / site_list         Access sitelist section
     >> help                         Get the list of commands in this section
     >> show                         Show all sites saved for for faster access
