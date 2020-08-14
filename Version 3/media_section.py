@@ -74,6 +74,9 @@ class media_section:
         return False
 
     def new_media(self, new_media: media) -> None:
+        '''
+        Add new media
+        '''
         if not self.__is_duplicate(new_media=new_media):
             self.__media_data_file.append_one_data(data_to_append=new_media)
             print("New media added")
@@ -190,7 +193,7 @@ class media_section:
         for item in media_data:
             converted_item = convert(file_data=item).to_media()
             if (
-                new_media.get_name() == converted_item.get_name()
+                new_media.get_name().lower() == converted_item.get_name().lower()
                 and new_media.get_category() == converted_item.get_category()
             ):
                 return True
