@@ -1,20 +1,14 @@
-# Per-Ast (Personal Assistant or Task Automator)
+# Personal_Assistant
+A simple cmd based personal assistant written using python
 
-> <li>Required : Python 3.7 <br>
+python 3 is required
 
-> You must have internet connection when starting this script for the first time<br>
-> It will automatically install some missing modules<br>
+Additionallyu needed libraries
+```
+pip install pyperclip
+```
 
-> Read '<I>README.md</i>' inside each version for detailed command list
+make sure, you read the source code fully,
+you will be needing to configure this script to fit your system
 
-
-## <u>Version 3</u>
-
-Features :-
-    <li>Folder Fast Access</li>
-    <li>App Fast Access</li>
-    <li>Website Fast Access</li>
-    <li>Adding Reminders</li>
-    <li>Keeping record of movies and series</li>
-
-
+contact me via mail for doubts regarding code or new suggestion : itsmesk000@gmail.com
