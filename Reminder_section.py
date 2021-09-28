@@ -1,5 +1,5 @@
 from ast import literal_eval
-
+from tkinter import END, Button, Entry, Label, StringVar, Tk, mainloop, ttk
 from data_types import convert, log, reminder, status
 from file_operation import File
 from operations import (
@@ -67,21 +67,39 @@ class reminder_section(change_status):
         sorted_list = sorted(reminder_list, key=lambda rem: rem.get_id())
         return sorted_list
 
+    def get_new_reminder_id(self) -> int:
+        """
+        Return reminder id for new reminder
+        """
+        file_data: list = (
+            self.__reminder_data_file.read_data()
+            + self.__completed_reminder_data_file.read_data()
+        )
+        file_data = self.__sort_reminder_list(reminder_list=file_data)
+        if self.__reminder_data_file.is_empty():
+            reminder_id = 0
+        else:
+            reminder_id = file_data[-1].get_id()
+        reminder_id += 1
+        return reminder_id
+
+    def add_new_reminder(self, reminder_data: str, reminder_type: str) -> None:
+        """
+        add new reminder from outside the reminder class
+        """
+        if self.__add_reminder(
+            reminder_data=reminder_data, reminder_type=reminder_type
+        ):
+            print("Reminder Added Successfully")
+        else:
+            print("Unable to add new reminder")
+
     def __add_reminder(self, reminder_data: str, reminder_type: str) -> bool:
         """
         Add new reminder to the list
         """
         try:
-            file_data = (
-                self.__reminder_data_file.read_data()
-                + self.__completed_reminder_data_file.read_data()
-            )
-            file_data = self.__sort_reminder_list(reminder_list=file_data)
-            if self.__reminder_data_file.is_empty():
-                reminder_id = 0
-            else:
-                reminder_id = file_data[-1].get_id()
-            reminder_id += 1
+            reminder_id = self.get_new_reminder_id()
             new_reminder = reminder(
                 new=True,
                 reminder_id=reminder_id,
@@ -478,5 +496,86 @@ class reminder_section(change_status):
                 write_log(data_list=input_list)
 
 
+class add_reminder_gui:
+    """
+    GUI to add new process to list
+    """
+
+    def __init__(self) -> None:
+        self.root = Tk()
+        self.root.title("Add Reminder")
+        self.root.minsize(500, 300)
+        self.root.maxsize(500, 300)
+
+        # ID Label and text box
+        self.id_label = Label(self.root, text="ID")
+        self.id_label.config(font="15")
+        self.id_label.place(x=0, y=0)
+        self.id_textbox = Entry(self.root)
+        self.id_textbox.config(font="15")
+        self.id_textbox.place(x=140, y=0)
+        self.id_textbox.insert(1, reminder_section().get_new_reminder_id())
+        self.id_textbox.configure(state="readonly")
+
+        # reminder data label and textbox
+        self.reminder_data_label = Label(self.root, text="Reminder")
+        self.reminder_data_label.config(font="15")
+        self.reminder_data_label.place(x=0, y=60)
+        self.reminder_data_textbox = Entry(self.root, width="30")
+        self.reminder_data_textbox.config(font="15")
+        self.reminder_data_textbox.place(x=140, y=60)
+
+        # reminder type label and textbox
+        self.reminder_type_label = Label(self.root, text="Reminder Type")
+        self.reminder_type_label.config(font="15")
+        self.reminder_type_label.place(x=0, y=120)
+        self.reminder_type_textbox = Entry(self.root)
+        self.reminder_type_textbox.config(font="15")
+        self.reminder_type_textbox.place(x=140, y=120)
+        self.reminder_type_textbox.insert(1, "none")
+
+        # Submit button
+        self.submit_button = Button(
+            self.root, width=10, text="Submit", command=self.__submit_data
+        )
+        self.submit_button.place(x=120, y=200)
+
+        # Clear button
+        self.clear_button = Button(
+            self.root, width=10, text="Clear", command=self.__clear_field
+        )
+        self.clear_button.place(x=250, y=200)
+
+        mainloop()
+
+    def __clear_field(self) -> None:
+        """
+        Clear all text fields
+        """
+        # self.id_textbox.delete(0, END)
+        self.reminder_data_textbox.delete(0, END)
+        self.reminder_type_textbox.delete(0, END)
+
+    def __submit_data(self) -> None:
+        """
+        Submit data and save it to file
+        """
+        try:
+            # new_media = media(media_id=media_id,media_nam)
+            # __reminder_id = self.id_textbox.get()
+            __reminder_data = self.reminder_data_textbox.get()
+            __reminder_type = self.reminder_type_textbox.get()
+            if __reminder_data in ["", " "] or __reminder_type in [" ", ""]:
+                return
+            reminder_section().add_new_reminder(
+                reminder_data=__reminder_data, reminder_type=__reminder_type
+            )
+            # exit()
+            self.__clear_field()
+        except Exception:
+            pass
+
+
 if __name__ == "__reminder__":
     pass
+    # add_reminder_gui()

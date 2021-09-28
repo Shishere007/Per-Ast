@@ -1,4 +1,5 @@
 from pathlib import Path
+from tkinter import END, Button, Entry, Label, StringVar, Tk, mainloop, ttk
 
 from data_types import convert, folder, log
 from file_operation import File
@@ -72,7 +73,29 @@ class folder_fast_access(change_status):
             data_list=self.__folder_file.read_data(), data_type="folder"
         ).get_converted_list()
 
-    def __add_new_folder(self, new_folder: str) -> None:
+    def add_new_folder(self, title: str, location: str, codes: [str]) -> bool:
+        """
+        Add new process from outside the class(public fucntion)
+        """
+        self.__dupe = duplicate(
+            data_list=self.__folder_file.read_data(), data_type="process"
+        )
+        if not Path(location).exists():
+            print("Invalid folder location")
+            return False
+        if self.__dupe.is_file_exists(location=location):
+            print("folder is already in list")
+            return False
+        keycodes = codes.split(",")
+        if self.__dupe.is_keyword_exist(keyword_list=keycodes):
+            print(f"one of the keyword is already in use")
+            return False
+        self.__add_new_folder(
+            new_folder=folder(title=title, location=location, codes=keycodes)
+        )
+        return True
+
+    def __add_new_folder(self, new_folder: folder) -> None:
         """
         Add new folder for access
         """
@@ -210,5 +233,86 @@ class folder_fast_access(change_status):
             write_log(data_list=input_list)
 
 
+class add_folder_gui:
+    """
+    GUI to add new folder to list
+    """
+
+    def __init__(self) -> None:
+        self.root = Tk()
+        self.root.title(f"Add folder")
+        self.root.minsize(500, 300)
+        self.root.maxsize(500, 300)
+
+        # ID Label and text box
+        self.title_label = Label(self.root, text="Title")
+        self.title_label.config(font="15")
+        self.title_label.place(x=0, y=0)
+        self.title_textbox = Entry(self.root)
+        self.title_textbox.config(font="15")
+        self.title_textbox.place(x=140, y=0)
+
+        # reminder data label and textbox
+        self.location_label = Label(self.root, text="Location")
+        self.location_label.config(font="15")
+        self.location_label.place(x=0, y=60)
+        self.location_textbox = Entry(self.root, width="30")
+        self.location_textbox.config(font="15")
+        self.location_textbox.place(x=140, y=60)
+
+        # reminder type label and textbox
+        self.codes_label = Label(self.root, text="Codes")
+        self.codes_label.config(font="15")
+        self.codes_label.place(x=0, y=120)
+        self.codes_textbox = Entry(self.root)
+        self.codes_textbox.config(font="15")
+        self.codes_textbox.place(x=140, y=120)
+
+        # Submit button
+        self.submit_button = Button(
+            self.root, width=10, text="Submit", command=self.__submit_data
+        )
+        self.submit_button.place(x=120, y=200)
+
+        # Clear button
+        self.clear_button = Button(
+            self.root, width=10, text="Clear", command=self.__clear_field
+        )
+        self.clear_button.place(x=250, y=200)
+
+        mainloop()
+
+    def __clear_field(self) -> None:
+        """
+        Clear all text fields
+        """
+        self.title_textbox.delete(0, END)
+        self.location_textbox.delete(0, END)
+        self.codes_textbox.delete(0, END)
+
+    def __submit_data(self) -> None:
+        """
+        Submit data and save it to file
+        """
+        try:
+            __folder_title = self.title_textbox.get()
+            __folder_location = self.location_textbox.get()
+            __folder_codes = self.codes_textbox.get()
+            if (
+                __folder_location in ["", " "]
+                or __folder_codes in [" ", ""]
+                or __folder_title in [" ", ""]
+            ):
+                return
+            if folder_fast_access().add_new_folder(
+                title=__folder_title, location=__folder_location, codes=__folder_codes,
+            ):
+                # exit()
+                self.__clear_field()
+        except Exception:
+            pass
+
+
 if __name__ == "__folder_fast_access__":
     pass
+    # add_folder_gui()

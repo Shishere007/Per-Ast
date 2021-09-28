@@ -6,7 +6,6 @@ Defined Data types :
     > Folder
     > Website
     > Reminder
-    > Mail  
     > Status
 """
 
@@ -30,7 +29,7 @@ class base_class:
     def __str__(self) -> str:
         return f"{{'Title':'{self.__title}','Location':'{self.__location}','codes':{self.__codes}}}"
 
-    def __format__(self, format_spec: str) -> str:
+    def __format__(self, format_spec: str = None) -> str:
         return f"""
         {format_spec} Title       :   {self.__title}
         {format_spec} Location    :   {self.__location}
@@ -254,179 +253,10 @@ class reminder:
         return datetime.now().strftime("%d-%b-%Y %I:%M:%S %p")
 
 
-class mail:
-    """ 
-        mail Datatype. with mail ID, from and to address.
-        And mail subject and body
-    """
-
-    def __init__(
-        self,
-        new: bool = False,
-        mail_id: int = 0,
-        from_address: str = None,
-        password: str = None,
-        to_address: str = None,
-        mail_subject: str = None,
-        mail_body: str = None,
-        mail_status: str = "pending",
-        remark: str = None,
-        added_date: datetime = None,
-        sent_date: datetime = None,
-    ) -> None:
-        self.__mail_id = mail_id
-        self.__from_address = from_address
-        self.__password = password
-        self.__to_address = to_address
-        self.__mail_subject = mail_subject
-        self.__mail_body = mail_body
-        self.__mail_status = mail_status
-        self.__remark = remark
-        self.__added_date = self.__set_date(new=new, added_date=added_date)
-        self.__sent_date = sent_date
-
-    def __str__(self) -> str:
-        return f"{{'ID': '{self.__mail_id}', 'From': '{self.__from_address}', 'Password': '{self.__password}', 'To': '{self.__to_address}', 'Subject': '{self.__mail_subject}', 'Body': '{self.__mail_body}', 'Status': '{self.__mail_status}', 'Remark': '{self.__remark}', 'Added_date': '{self.__added_date}', 'Sent_date': '{self.__sent_date}'}}"
-
-    def __format__(self, format_spec: str = None) -> str:
-        return f"""
-        Mail ID     :   {self.__mail_id}
-        From        :   {self.__from_address}
-        To          :   {self.__to_address}
-        Subject     :   {self.__mail_subject}
-        Body        :   {self.__mail_body}
-        Mail Status :   {self.__mail_status}
-        Remark      :   {self.__remark}
-        Added Date  :   {self.__added_date}
-        Sent Date   :   {self.__sent_date}
-        """
-
-    def format(self) -> str:
-        """
-        Retunrs the Mail data formatted in specific order
-        """
-        return self.__format__()
-
-    def __set_date(self, new: bool, added_date: datetime) -> datetime:
-        """
-        Arrange date
-        """
-        if new:
-            return self.__get_date_time()
-        else:
-            return added_date
-
-    def to_dictionary(self) -> dict:
-        """
-        Convert mail datatype into dictionary datatype
-        """
-        dic = {}
-        dic["ID"] = self.__mail_id
-        dic["From"] = self.__from_address
-        dic["Password"] = self.__password
-        dic["To"] = self.__to_address
-        dic["Subject"] = self.__mail_subject
-        dic["Body"] = self.__mail_body
-        dic["Status"] = self.__mail_status
-        dic["Remark"] = self.__remark
-        dic["Added_date"] = self.__added_date
-        dic["Sent_date"] = self.__sent_date
-        return dic
-
-    def to_string(self) -> str:
-        """
-        Converet reminder to string
-        """
-        return self.__str__()
-
-    def show(self) -> None:
-        """
-        Prints the Mail data in specific order
-        """
-        print(self.format())
-
-    def get_id(self) -> int:
-        """
-        Retunrs ID of mail
-        """
-        return int(self.__mail_id)
-
-    def get_status(self) -> str:
-        """
-        Retunrs Status of mail
-        """
-        return self.__mail_status
-
-    def get_from_address(self) -> str:
-        """
-        Return from address
-        """
-        return self.__from_address
-
-    def get_password(self) -> str:
-        """
-        Return the password of the mail
-        """
-        return self.__password
-
-    def get_to_address(self) -> str:
-        """
-        Return from address
-        """
-        return self.__to_address
-
-    def get_subject(self) -> str:
-        """
-        Return the subject of the mail
-        """
-        return self.__mail_subject
-
-    def get_body(self) -> str:
-        """
-        Return the body of the mail
-        """
-        return self.__mail_body
-
-    def set_status(self, status: str = "completed") -> None:
-        """
-        set Status to 'Completed' by default
-        or to the specified one
-        """
-        self.__mail_status = status
-        self.__sent_date = self.__get_date_time()
-
-    def is_completed(self) -> bool:
-        """
-        Returns True if mail status is 'completed', 
-        False otherwise
-        """
-        return self.__mail_status == "completed"
-
-    def clear_password(self) -> None:
-        """
-        erases the stored password
-        """
-        self.__password = None
-
-    def set_remark(self, remark: str) -> None:
-        """
-        set additional notes on mail. like saving the reason incase of 
-        failure 
-        """
-        self.__remark = remark
-
-    def __get_date_time(self) -> datetime:
-        """
-        return the current date
-        """
-        # get date time in 05-Mar-2020 02:01:30 PM format
-        return datetime.now().strftime("%d-%b-%Y %I:%M:%S %p")
-
-
 class status:
     """
     Status data type. Store basic details like login type,
-    reminder and mail pending status, things like that
+    reminder and things like that
     """
 
     def __init__(
@@ -434,8 +264,6 @@ class status:
         login_type: str = None,
         reminder_pending: bool = False,
         reminder_pending_count: int = 0,
-        mail_pending: bool = False,
-        mail_pending_count: int = 0,
         site_list_count: int = 0,
         folder_list_count: int = 0,
         process_list_count: int = 0,
@@ -443,14 +271,12 @@ class status:
         self.__login_type = login_type
         self.__reminder_pending = reminder_pending
         self.__reminder_pending_count = reminder_pending_count
-        self.__mail_pending = mail_pending
-        self.__mail_pending_count = mail_pending_count
         self.__site_list_count = site_list_count
         self.__folder_list_count = folder_list_count
         self.__process_list_count = process_list_count
 
     def __str__(self) -> None:
-        return f"{{'login_type': '{self.__login_type}', 'mail_pending': '{self.__mail_pending}', 'mail_pending_count': '{self.__mail_pending_count}', 'reminder_pending': '{self.__reminder_pending}', 'reminder_pending_count': '{self.__reminder_pending_count}', 'site_list': '{self.__site_list_count}', 'folder_list': '{self.__folder_list_count}', 'process_list': '{self.__process_list_count}'}}"
+        return f"{{'login_type': '{self.__login_type}', 'reminder_pending': '{self.__reminder_pending}', 'reminder_pending_count': '{self.__reminder_pending_count}', 'site_list': '{self.__site_list_count}', 'folder_list': '{self.__folder_list_count}', 'process_list': '{self.__process_list_count}'}}"
 
     def to_string(self) -> str:
         """
@@ -463,8 +289,6 @@ class status:
         Login Type              :   {self.__login_type}
         Reminder Pending        :   {self.__reminder_pending}
         Reminder Pending Count  :   {self.__reminder_pending_count}
-        Mail Pending            :   {self.__mail_pending}
-        Mail Pending Count      :   {self.__mail_pending_count}
         Folder List Count       :   {self.__folder_list_count}
         Site List Count         :   {self.__site_list_count}
         Process List Count      :   {self.__process_list_count}
@@ -482,8 +306,6 @@ class status:
         """
         dic = {}
         dic["login_type"] = self.__login_type
-        dic["mail_pending"] = self.__mail_pending
-        dic["mail_pending_count"] = self.__mail_pending_count
         dic["reminder_pending"] = self.__reminder_pending
         dic["reminder_pending_count"] = self.__reminder_pending_count
         dic["site_list"] = self.__site_list_count
@@ -496,19 +318,6 @@ class status:
         Return Login type
         """
         return self.__login_type
-
-    def get_mail_pending_status(self) -> bool:
-        """
-        True : Mail Pending\n
-        False : Mail not Pending
-        """
-        return self.__mail_pending
-
-    def get_mail_pending_count(self) -> int:
-        """
-        Pending Mail count
-        """
-        return self.__mail_pending_count
 
     def get_reminder_pending_status(self) -> bool:
         """
@@ -560,19 +369,6 @@ class status:
         """
         self.__reminder_pending_count = reminder_count
 
-    def set_mail_pending_status(self, mail_status: bool) -> None:
-        """
-        Change if mail is pending or not
-        True/False
-        """
-        self.__mail_pending = mail_status
-
-    def set_mail_pending_count(self, mail_count: int) -> None:
-        """
-        Change pending mail Count
-        """
-        self.__mail_pending_count = mail_count
-
     def set_site_list_count(self, site_count: int) -> None:
         """
         Change no of sites in fast access count
@@ -596,41 +392,38 @@ class config:
     def __init__(
         self,
         show_curresponding_reminder: bool = True,
-        start_up_mail_check: bool = True,
         start_up_reminder_check: bool = True,
         reminder_keywords: [str] = [],
         website_keywords: [str] = [],
         process_keywords: [str] = [],
         status_keywords: [str] = [],
-        mail_keywords: [str] = [],
         folder_keywords: [str] = [],
         configure_keywords: [str] = [],
+        media_keywords: [str] = [],
     ) -> None:
         self.__show_curresponding_reminder = show_curresponding_reminder
-        self.__start_up_mail_check = start_up_mail_check
         self.__start_up_reminder_check = start_up_reminder_check
         self.__reminder_keywords = self.__set_reminder_keyword(
             keywords=reminder_keywords
         )
-        self.__mail_keywords = self.__set_mail_keyword(keywords=mail_keywords)
         self.__folder_keywords = self.__set_folder_keyword(keywords=folder_keywords)
         self.__website_keywords = self.__set_website_keyword(keywords=website_keywords)
         self.__process_keywords = self.__set_process_keyword(keywords=process_keywords)
         self.__status_keywords = self.__set_status_keyword(keywords=status_keywords)
         self.__config_keywords = self.__set_config_keyword(keywords=configure_keywords)
+        self.__media_keywords = self.__set_media_keyword(keywords=media_keywords)
 
     def __format__(self, format_spec: str = None) -> str:
         return f"""
         Show Currsesponding Reminder    :   {self.__show_curresponding_reminder}
-        Startup Mail check              :   {self.__start_up_mail_check}
         Startup Reminder Check          :   {self.__start_up_reminder_check}
         Reminder Keywords               :   {" , ".join(self.__reminder_keywords)}
         Folder Keywords                 :   {" , ".join(self.__folder_keywords)}
         Process Keywords                :   {" , ".join(self.__process_keywords)}
         Website Keywords                :   {" , ".join(self.__website_keywords)}
-        Mail Keywords                   :   {" , ".join(self.__mail_keywords)}
         Status Keywords                 :   {" , ".join(self.__status_keywords)}
         Configure Keywords              :   {" , ".join(self.__config_keywords)}
+        Media Keywords                  :   {" , ".join(self.__media_keywords)}
         """
 
     def format(self) -> str:
@@ -648,26 +441,23 @@ class config:
         """
         dic = {}
         dic["Show_Currsesponding_Reminder"] = self.__show_curresponding_reminder
-        dic["start_up_mail_check"] = self.__start_up_mail_check
         dic["start_up_reminder_check"] = self.__start_up_reminder_check
         dic["Reminder_Keywords"] = self.__reminder_keywords
         dic["Folder_Keywords"] = self.__folder_keywords
         dic["Process_Keywords"] = self.__process_keywords
         dic["Website_Keywords"] = self.__website_keywords
-        dic["Mail_Keywords"] = self.__mail_keywords
         dic["Status_Keywords"] = self.__status_keywords
         dic["configure_keywords"] = self.__config_keywords
+        dic["media_keywords"] = self.__media_keywords
         return dic
 
     def get_status(self, status_of: str) -> bool:
         """
         Get status of Show_Currsesponding_Reminder(show reminder),
-        start_up_mail_check(mail check),start_up_reminder_check(reminder check)
+        start_up_reminder_check(reminder check)
         """
         if status_of == "show reminder":
             return self.__show_curresponding_reminder
-        elif status_of == "mail check":
-            return self.__start_up_mail_check
         elif status_of == "reminder check":
             return self.__start_up_reminder_check
         else:
@@ -693,6 +483,8 @@ class config:
             keywords.append("process")
         if "processlist" not in keywords:
             keywords.append("processlist")
+        if "app" not in keywords:
+            keywords.append("app")
         return keywords
 
     def __set_folder_keyword(self, keywords: [str]) -> [str]:
@@ -713,17 +505,10 @@ class config:
         """
         if "website" not in keywords:
             keywords.append("website")
-        if "websitelist" not in keywords:
-            keywords.append("websitelist")
-        return keywords
-
-    def __set_mail_keyword(self, keywords: [str]) -> [str]:
-        """
-        Making sure default keywords are present, 
-        adding if not
-        """
-        if "mail" not in keywords:
-            keywords.append("mail")
+        if "site" not in keywords:
+            keywords.append("site")
+        if "sitelist" not in keywords:
+            keywords.append("sitelist")
         return keywords
 
     def __set_status_keyword(self, keywords: [str]) -> [str]:
@@ -746,40 +531,49 @@ class config:
             keywords.app("configure")
         return keywords
 
+    def __set_media_keyword(self, keywords: [str]) -> [str]:
+        """
+        Making sure default keywords are present, 
+        adding if not
+        """
+        if "media" not in keywords:
+            keywords.append("media")
+        if "med" not in keywords:
+            keywords.append("med")
+        return keywords
+
     def set_status(self, status_of: str, do_show: bool = True) -> bool:
         """
         Set status of Show_Currsesponding_Reminder(show reminder),
-        start_up_mail_check(mail check),start_up_reminder_check(reminder check)
+        start_up_reminder_check(reminder check)
         """
         if status_of == "show reminder":
             self.__show_curresponding_reminder = do_show
-        elif status_of == "mail check":
-            self.__start_up_mail_check = do_show
         elif status_of == "reminder check":
             self.__start_up_reminder_check = do_show
         else:
             return False
         return True
 
-    def add_keyword(self, datatype: str, keyword: str) -> bool:
+    def add_or_change_keywords(self, datatype: str, keyword_list: [str]) -> bool:
         """
-        Add new keyword for fast access
+        Add / delete /change keyword  for fast access
         """
         try:
             if datatype == "reminder":
-                self.__reminder_keywords.append(keyword)
+                self.__reminder_keywords = keyword_list
             elif datatype == "folder":
-                self.__folder_keywords.append(keyword)
+                self.__folder_keywords = keyword_list
             elif datatype == "process":
-                self.__process_keywords.append(keyword)
+                self.__process_keywords = keyword_list
             elif datatype == "status":
-                self.__status_keywords.append(keyword)
-            elif datatype == "mail":
-                self.__mail_keywords.append(keyword)
+                self.__status_keywords = keyword_list
             elif datatype == "website":
-                self.__website_keywords.append(keyword)
+                self.__website_keywords = keyword_list
             elif datatype == "configure":
-                self.__config_keywords.append(keyword)
+                self.__config_keywords = keyword_list
+            elif datatype == "media":
+                self.__media_keywords = keyword_list
             else:
                 raise Exception
             return True
@@ -807,16 +601,14 @@ class config:
                 if not keyword in self.__status_keywords:
                     raise Exception
                 self.__status_keywords.remove(keyword)
-            elif datatype == "mail":
-                if not keyword in self.__mail_keywords:
-                    raise Exception
-                self.__mail_keywords.remove(keyword)
             elif datatype == "website":
                 if not keyword in self.__website_keywords:
                     raise Exception
-                self.__website_keywordss.remove(keyword)
+                self.__website_keywords.remove(keyword)
             elif datatype == "configure":
                 self.__config_keywords.remove(keyword)
+            elif datatype == "media":
+                self.__media_keywords.remove(keyword)
             else:
                 raise Exception
             return True
@@ -836,12 +628,12 @@ class config:
                 print(f"Keywords : {' , '.join(self.__process_keywords)}")
             elif datatype == "status":
                 print(f"Keywords : {' , '.join(self.__status_keywords)}")
-            elif datatype == "mail":
-                print(f"Keywords : {' , '.join(self.__mail_keywords)}")
             elif datatype == "website":
                 print(f"Keywords : {' , '.join(self.__website_keywords)}")
             elif datatype == "configure":
                 print(f"Keywords : {' , '.join(self.__config_keywords)}")
+            elif datatype == "media":
+                print(f"Keywords : {' , '.join(self.__media_keywords)}")
             else:
                 raise Exception
             return True
@@ -861,12 +653,12 @@ class config:
                 return self.__process_keywords
             elif datatype == "status":
                 return self.__status_keywords
-            elif datatype == "mail":
-                return self.__mail_keywords
             elif datatype == "website":
                 return self.__website_keywords
             elif datatype == "configure":
                 return self.__config_keywords
+            elif datatype == "media":
+                return self.__media_keywords
             else:
                 raise Exception
         except Exception:
@@ -886,15 +678,162 @@ class log:
         return self.__str__()
 
 
+class media:
+    def __init__(
+        self,
+        new: bool = False,
+        media_id: int = None,
+        media_name: str = None,
+        category: str = None,
+        media_type: str = None,
+        episodes: int = None,
+        duration: int = None,
+        added_date: datetime = None,
+        rewatched: int = 0,
+    ) -> None:
+        self.__new: bool = new
+        self.__media_id: int = media_id
+        self.__media_name: str = media_name
+        self.__category: str = category
+        self.__media_type: str = media_type
+        self.__episodes: int = episodes
+        self.__duration: int = duration
+        self.__added_date: datetime = self.__set_date(new=new, added_date=added_date)
+        self.__rewatched: int = rewatched
+
+    def __str__(self) -> str:
+        return f"{{'ID':'{self.__media_id}', 'Name': '{self.__media_name}', 'Type': '{self.__media_type}', 'Added_on': '{self.__added_date}', 'category': '{self.__category}', 'Episodes': '{self.__episodes}', 'Duration': '{self.__duration}', 'Rewatched':'{self.__rewatched}''}}"
+
+    def to_string(self) -> str:
+        """
+        Converet reminder to string
+        """
+        return self.__str__()
+
+    def __format__(self, format_spec: str = None) -> str:
+        return f"""
+        Media ID        :   {self.__media_id}
+        Category        :   {self.__category}
+        Name            :   {self.__media_name}
+        Type            :   {self.__media_type}
+        Added On        :   {self.__added_date}     
+        Episodes        :   {self.__episodes}
+        Duration        :   {self.__duration}
+        Rewatched       :   {self.__rewatched}
+        """
+
+    def to_list(self) -> list:
+        """
+        Return data in a list[name,type,category,episodes,duration,rewatched]
+        """
+        return [
+            self.__media_id,
+            self.__media_name,
+            self.__media_type,
+            self.__category,
+            self.__episodes,
+            self.__duration,
+            self.__rewatched,
+        ]
+
+    def __set_date(self, new: bool, added_date: datetime) -> datetime:
+        """
+        Arrange date
+        """
+        if new:
+            return self.__get_date_time()
+        else:
+            return added_date
+
+    def __get_date_time(self) -> datetime:
+        """
+        return the current date
+        """
+        # get date time in 05-Mar-2020 02:01:30 PM format
+        return datetime.now().strftime("%d-%b-%Y %I:%M:%S %p")
+
+    def to_dictionary(self) -> dict:
+        """
+        Convert reminder into dictionary datatype
+        """
+        dic = {}
+        dic["media_id"] = self.__media_id
+        dic["media_name"] = self.__media_name
+        dic["type"] = self.__media_type
+        dic["added_on"] = self.__added_date
+        dic["category"] = self.__category
+        dic["episodes"] = self.__episodes
+        dic["duration"] = self.__duration
+        dic["rewatched"] = self.__rewatched
+        return dic
+
+    def format(self) -> str:
+        """
+        Returns the reminder in specific format
+        """
+        return self.__format__()
+
+    def show(self) -> None:
+        """
+        Prints the reminder in specific format
+        """
+        print(self.format())
+
+    def get_id(self) -> int:
+        """
+        Returns the ID of the reminder
+        """
+        return int(self.__media_id)
+
+    def get_name(self) -> str:
+        return self.__media_name
+
+    def set_name(self, name: str) -> None:
+        self.__media_name = name
+
+    def get_type(self) -> str:
+        return self.__media_type
+
+    def set_type(self, media_type: str) -> None:
+        self.__media_type = media_type
+
+    def get_category(self) -> str:
+        return self.__category
+
+    def set_category(self, category: str) -> None:
+        self.__category = category
+
+    def get_episodes(self) -> int:
+        return int(self.__episodes)
+
+    def set_episodes(self, episodes: int) -> None:
+        self.__episodes = int(episodes)
+
+    def get_duration(self) -> int:
+        return int(self.__duration)
+
+    def set_duration(self, duration: int) -> None:
+        self.__duration = duration
+
+    def get_added_date(self) -> str:
+        return self.__added_date
+
+    def get_rewatched(self) -> int:
+        return self.__rewatched
+
+    def set_rewatched(self, rewatched: int) -> None:
+        self.__rewatched = rewatched
+
+
 class convert:
     """
     convert data written into file as string data into its original form
     for these data types
         > reminder
-        > mail
         > process
         > folder
         > website
+        > media
     """
 
     def __init__(self, file_data: []) -> None:
@@ -915,26 +854,6 @@ class convert:
             )
         except Exception as e:
             print(e)
-            raise TypeError("Invalid Type Conversion")
-
-    def to_mail(self) -> mail:
-        """
-        Converts and returns the data in Mail datatype
-        """
-        try:
-            return mail(
-                mail_id=self.data["ID"],
-                from_address=self.data["From"],
-                to_address=self.data["To"],
-                mail_subject=self.data["Subject"],
-                mail_body=self.data["Body"],
-                mail_status=self.data["Status"],
-                added_date=self.data["Added_date"],
-                sent_date=self.data["Sent_date"],
-                remark=self.data["Remark"],
-                password=self.data["Password"],
-            )
-        except Exception:
             raise TypeError("Invalid Type Conversion")
 
     def to_process(self) -> process:
@@ -983,15 +902,13 @@ class convert:
         try:
             return status(
                 login_type=self.data["login_type"],
-                mail_pending=self.data["mail_pending"],
-                mail_pending_count=self.data["mail_pending_count"],
                 reminder_pending=self.data["reminder_pending"],
                 reminder_pending_count=self.data["reminder_pending_count"],
                 site_list_count=self.data["site_list"],
                 folder_list_count=self.data["folder_list"],
                 process_list_count=self.data["process_list"],
             )
-        except Exception as e:
+        except Exception:
             raise TypeError("Invalid Type Conversion")
 
     def to_config(self) -> config:
@@ -1001,21 +918,37 @@ class convert:
         try:
             return config(
                 show_curresponding_reminder=self.data["Show_Currsesponding_Reminder"],
-                start_up_mail_check=self.data["start_up_mail_check"],
                 start_up_reminder_check=self.data["start_up_reminder_check"],
                 reminder_keywords=self.data["Reminder_Keywords"],
                 folder_keywords=self.data["Folder_Keywords"],
                 process_keywords=self.data["Process_Keywords"],
                 website_keywords=self.data["Website_Keywords"],
-                mail_keywords=self.data["Mail_Keywords"],
                 status_keywords=self.data["Status_Keywords"],
                 configure_keywords=self.data["configure_keywords"],
+                media_keywords=self.data["media_keywords"],
             )
-        except Exception as e:
+        except Exception:
             # print(e)
             raise TypeError("Invalid Type Conversion")
-    
-    
+
+    def to_media(self) -> media:
+        """
+        Converts and returns the data in media datatype
+        """
+        try:
+            return media(
+                media_id=self.data["media_id"],
+                media_name=self.data["media_name"],
+                media_type=self.data["type"],
+                added_date=self.data["added_on"],
+                category=self.data["category"],
+                episodes=self.data["episodes"],
+                duration=self.data["duration"],
+                rewatched=self.data["rewatched"],
+            )
+        except Exception as e:
+            print(e)
+            # raise TypeError("Invalid Type Conversion")
 
 
 if __name__ == "DataType":

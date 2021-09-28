@@ -2,17 +2,22 @@
 
 My personal Assistant written using python
 
-Requirement : Python 3
+> <li>Required : Python 3.7 <br>
 
-For doing specific tasks to help reduce work
+> You must have internet connection when starting this script for the first time<br>
+> It will automatically install some missing modules<br>
 
-<i>some new libraries are needed for this script to work<br>
-use following instruction to install those libraries</i>
+> Read '<I>README.md</i>' inside each version for detailed command list
 
-```
-pip install pyperclip
 
-```
+## <u>Version 3</u>
+
+Features :-
+    <li>Folder Fast Access</li>
+    <li>App Fast Access</li>
+    <li>Website Fast Access</li>
+    <li>Adding Reminders</li>
+    <li>Keeping record of movies and series</li>
 
 <u><b>Command List</b></u>
 
@@ -28,10 +33,11 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
         >>> Eg :- show english      List all items in the folder saved for faster access with keyword 'english'
     >> show reminder                List all pending reminders
     >> show mail                    List all pending e-mails
-    >> show sitelist                List all sites saved for faster access
-    >> show processlist             List all process/apps saved for faster access
-    >> show folderlist              List all folder saved for faster access
+    >> show site                    List all sites saved for faster access
+    >> show app                     List all process/apps saved for faster access
+    >> show folder                  List all folder saved for faster access
 	>> show media					List all media
+    >> show media gui               Open GUI
 	>> show media status			Shows statitics of all media you watched
 > kill                   
     >> kill                         Exit the current section
@@ -52,6 +58,7 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
 > configure / configure				open configuration panel
 > config gui						open configuration panel GUI mode
 
+> con?                              Check if interconnection is available
 > quit / exit                       Exit the application/script
 > play [type] [filename]            play the media file  ### DISABLED
 > path                              Show current path
@@ -107,7 +114,7 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
 
 
     ### Save websites with codes for faster access of these websites  ###
-> sitelist/site_list                
+> sitelist/site_list/site                
     >> sitelist / site_list         Access sitelist section
     >> help                         Get the list of commands in this section
     >> show                         Show all sites saved for for faster access
@@ -170,8 +177,6 @@ PS : In sections like processlist,sitelist , it will need to restart the app for
 
     >> ! [site_code]                open website related to the code in browser
     >> ! [search_keyword]           search_keyword will be searched in google and that page will be opened in web browser
-	PRE SAVED
-	>> ! yt [search_keyword]		search_keyword will be searched in youtube and that page will be opened in web browser
 > media
 	>>	add							add new media to watched list
 	>>	show [categoey]				show media saved under the category

@@ -4,18 +4,20 @@ from pathlib import Path
 
 from configure import configure
 from file_operation import File
-from Folder_fast_access import folder_fast_access
-from Mail_section import mail_section
+from Folder_fast_access import folder_fast_access, add_folder_gui
 from operations import clear_clip, print_list_items, show_date_time
-from process_fast_access import process_fast_access
-from Reminder_section import reminder_section
-from website_fast_access import website_fast_access
+from process_fast_access import process_fast_access, add_process_gui
+from Reminder_section import reminder_section, add_reminder_gui
+from website_fast_access import website_fast_access, add_website_gui
+from media_section import media_section, add_media_gui, show_media_table_gui
 
 try:
     from pyperclip import copy, paste
 except Exception:
+    print("please wait, installing missing modules")
     system("pip install pyperclip")
     from pyperclip import copy, paste
+
 
 __name__ = "__basic_commands__"
 
@@ -216,7 +218,6 @@ class basic_commands:
             ->> reminder                     Access reminder section
             ->> sitelist/site_list           Access sitelist section
             ->> processlist                  Access processlist section
-            ->> mail                         Access mail section
             ->> filelist/folderlist          Access folder fast access section
             ->> hidefile/hide_file           Access file hiding section
         
@@ -233,7 +234,7 @@ class basic_commands:
             user_input_list = user_input.split()
             folder_list = folder_fast_access().get_folder_list()
             input_length = len(user_input_list)
-            if input_length in [2, 3]:
+            if input_length in [2, 3, 4]:
                 for item in folder_list:
                     # to show files in the saved file locations/saved folders
                     if user_input_list[1] in item.get_codes():
@@ -248,8 +249,21 @@ class basic_commands:
                             raise UserWarning
                         break
                 else:
+                    if input_length >= 3:
+                        if user_input_list[1] in configure().get_keywords(
+                            data_type="media"
+                        ):
+                            if user_input_list[2] == "status":
+                                media_section().show_media_status()
+                            else:
+                                user_input_list.pop(1)
+                                media_section().show_media_list(
+                                    user_input=" ".join(user_input_list)
+                                )
+                            return
                     if not input_length == 2:
                         raise UserWarning
+                        # return
                     if user_input_list[1] in ["path"]:
                         # list the files with path to them
                         print_list_items(file_list=self.__current_location.glob("*"))
@@ -262,10 +276,6 @@ class basic_commands:
                     ):
                         reminder_section().show_reminder()
                     elif user_input_list[1] in configure().get_keywords(
-                        data_type="mail"
-                    ):
-                        mail_section().show_mail()
-                    elif user_input_list[1] in configure().get_keywords(
                         data_type="website"
                     ):
                         website_fast_access().show_website_list()
@@ -277,6 +287,10 @@ class basic_commands:
                         data_type="folder"
                     ):
                         folder_fast_access().show_folder_list()
+                    elif user_input_list[1] in configure().get_keywords(
+                        data_type="media"
+                    ):
+                        media_section().show_media_list(user_input="show")
                     else:
                         raise UserWarning
             elif input_length == 1:
@@ -363,20 +377,32 @@ class basic_commands:
 
     def __add_or_new(self, user_input: str) -> None:
         """
-        Add new reminder,mail,folder,process,website from main section
+        Add new reminder,folder,process,website from main section
         """
         try:
             keyword = user_input.split()[1]
             if keyword in configure().get_keywords(data_type="reminder"):
+                if user_input.__contains__("gui"):
+                    add_reminder_gui()
+                    return
                 reminder_section().add_reminder()
-            elif keyword in configure().get_keywords(data_type="mail"):
-                mail_section().new_mail()
             elif keyword in configure().get_keywords(data_type="folder"):
+                if user_input.__contains__("gui"):
+                    add_folder_gui()
+                    return
                 folder_fast_access().add_folder()
             elif keyword in configure().get_keywords(data_type="process"):
+                if user_input.__contains__("gui"):
+                    add_process_gui()
+                    return
                 process_fast_access().add_process()
             elif keyword in configure().get_keywords(data_type="website"):
+                if user_input.__contains__("gui"):
+                    add_website_gui()
+                    return
                 website_fast_access().add_website()
+            elif keyword in configure().get_keywords(data_type="media"):
+                add_media_gui()
             else:
                 print("Incorrect Keyword")
         except Exception as e:
@@ -384,7 +410,7 @@ class basic_commands:
 
     def __delete(self, user_input: str) -> None:
         """
-        delete reminder,mail,folder,process,website from main section
+        delete reminder,folder,process,website from main section
         """
         try:
             keyword = user_input.split()[1]
@@ -394,8 +420,6 @@ class basic_commands:
                 send_input = "del"
             if keyword in configure().get_keywords(data_type="reminder"):
                 reminder_section().delete_reminder(user_input=send_input)
-            elif keyword in configure().get_keywords(data_type="mail"):
-                mail_section().delete_mail(user_input=send_input)
             elif keyword in configure().get_keywords(data_type="folder"):
                 folder_fast_access().delete_folder(user_input=send_input)
             elif keyword in configure().get_keywords(data_type="process"):
@@ -478,12 +502,14 @@ class basic_commands:
                         self.__complete(user_input=user_input)
                 elif keyword in ["now", "date", "time"]:
                     show_date_time()
+                elif user_input in ["med status", "media status"]:
+                    media_section().show_media_status()
                 elif keyword in ["log"]:
                     self.__show_log()
                 else:
                     print("incorrect Command")
                     return False
-            
+
         except Exception as e:
             print(f"basic_commands > user_section - {e}")
 

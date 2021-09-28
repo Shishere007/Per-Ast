@@ -1,7 +1,6 @@
 [
     {
         "Show_Currsesponding_Reminder": false,
-        "start_up_mail_check": true,
         "start_up_reminder_check": false,
         "Reminder_Keywords": [
             "reminder",
@@ -14,20 +13,15 @@
         ],
         "Process_Keywords": [
             "process",
-            "processlist",
             "process_list",
-            "app"
+            "app",
+            "processlist"
         ],
         "Website_Keywords": [
             "website",
-            "websitelist",
             "site",
             "sitelist",
-            "site_list",
-            "website_list"
-        ],
-        "Mail_Keywords": [
-            "mail"
+            "site_list"
         ],
         "Status_Keywords": [
             "status"
@@ -36,6 +30,10 @@
             "config",
             "configure",
             "setting"
+        ],
+        "media_keywords": [
+            "media",
+            "med"
         ]
     }
 ]

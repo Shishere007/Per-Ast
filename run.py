@@ -1,12 +1,12 @@
-from configure import configure
-from data_types import log
-from Folder_fast_access import folder_fast_access
-from Mail_section import mail_section
-from operations import change_status, get_date_time, internet_connection, write_log
-from Reminder_section import reminder_section
 from basic_commands import basic_commands
 from browser_section import browser_section
+from configure import configure_gui, configure
+from data_types import log
+from Folder_fast_access import folder_fast_access
+from media_section import media_section
+from operations import change_status, get_date_time, internet_connection, write_log
 from process_fast_access import process_fast_access
+from Reminder_section import reminder_section
 from website_fast_access import website_fast_access
 
 __name__ = "__run__"
@@ -25,11 +25,8 @@ class run:
 
     def __start_up_check(self) -> None:
         """
-        Start up mail and reminder check
+        Start up reminder check
         """
-        # check if mails are pendig , if yes try sending them if internet connection is available
-        if configure().get_status(status_of="mail check"):
-            mail_section().startup_mail_check()
         # check if reminder's are pending , show prompt to see them
         if configure().get_status(status_of="reminder check"):
             reminder_section().startup_reminder_check()
@@ -58,10 +55,6 @@ class run:
                     continue
                 if user_input[0] == "!":
                     browser_section().user_section(user_input=user_input)
-                # to access mail section
-                elif user_input in configure().get_keywords(data_type="mail"):
-                    if mail_section().user_section():
-                        break
                 # to check if internet connection is available
                 elif user_input in configure().get_keywords(data_type="reminder"):
                     if reminder_section().user_section():
@@ -78,7 +71,9 @@ class run:
                     if folder_fast_access().user_section():
                         break
                 elif user_input in configure().get_keywords(data_type="configure"):
-                    if configure().user_section():
+                    configure_gui()
+                elif user_input in configure().get_keywords(data_type="media"):
+                    if media_section().user_section():
                         break
                 elif user_input == "con?":
                     internet_connection()

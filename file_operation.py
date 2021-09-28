@@ -31,7 +31,7 @@ class File:
         except Exception:
             self.empty_file()
 
-    def read_data(self) -> [dict]:
+    def read_data(self) -> list:
         """
         Read data from file return it as list
         """
@@ -50,6 +50,20 @@ class File:
             file_data = self.read_data()
             new_data = data_to_append.to_dictionary()
             file_data.append(new_data)
+            with open(file=self.file_location, mode="w") as file:
+                json.dump(file_data, file)
+            return True
+        except Exception as e:
+            print(f"file_operation > append_one_data - {e}")
+        return False
+
+    def append_one_data_string(self, data_to_append: str) -> bool:
+        """
+        Add one string data to the file
+        """
+        try:
+            file_data = self.read_data()
+            file_data.append(data_to_append)
             with open(file=self.file_location, mode="w") as file:
                 json.dump(file_data, file)
             return True
@@ -104,7 +118,7 @@ class File:
         False otherwise
         """
         try:
-            if self.read_data() == None:
+            if self.read_data() == []:
                 return True
             return False
         except Exception as e:

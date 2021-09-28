@@ -2,12 +2,28 @@ import json
 from datetime import date, datetime
 from os import system
 
-from data_types import *
+from data_types import (
+    config,
+    convert,
+    folder,
+    media,
+    process,
+    reminder,
+    status,
+    website,
+)
 from file_operation import File
 
 try:
+    from bs4 import BeautifulSoup
+except Exception:
+    print("please wait, installing missing modules")
+    system("pip install bs4")
+    from bs4 import BeautifulSoup
+try:
     from requests.api import get
 except Exception:
+    print("please wait, installing missing modules")
     system("pip install requests")
     from requests.api import get
 
@@ -135,22 +151,6 @@ def show_date_time() -> None:
     print(get_date_time())
 
 
-def is_mail_id(mail_id: str, mail_site: str = None) -> bool:
-    """
-    Check if mail_id is valid and return boolean
-    """
-    if mail_id.__contains__("@") and mail_id.__contains__(".com"):
-        if mail_site == "gmail" and mail_id.__contains__("gmail"):
-            return True
-        if (
-            mail_id.__contains__("gmail")
-            or mail_id.__contains__("outlook")
-            or mail_id.__contains__("hotmail")
-            or mail_id.__contains__("yahoo")
-        ):
-            return True
-    return False
-
 
 def get_date() -> date:
     """
@@ -177,6 +177,55 @@ def is_a_website(site: str) -> bool:
     return False
 
 
+def minutes_to_day_hour_min(time: int):
+    """
+    Convert minutes to DAy HOUR MINUT format
+    eg:
+    100 minutes ->  0 days, 1 hours, 40 mins
+    """
+    days = 0
+    hours = 0
+    mins = 0
+    days = time // 1440
+    leftover_minutes = time % 1440
+    hours = leftover_minutes // 60
+    mins = time - (days * 1440) - (hours * 60)
+    return str(days) + " days, " + str(hours) + " hours, " + str(mins) + " mins. "
+
+
+def get_duration_of_movie(movie_name: str, movie_category: str) -> int:
+    """
+    Get duration of a movie, if unable to find returns zero
+    """
+    duration_in_min = 0
+    try:
+        print("Fetching data, please wait")
+        if movie_name == "" and movie_category == "":
+            return 0
+        page_data = get(
+            f"https://www.google.com/search?q={movie_name}+{movie_category}+movie+duration"
+        )
+        soup = BeautifulSoup(page_data.content, features="html.parser")
+        duration_data = soup.find("div", attrs={"class": "BNeawe tAd8D AP7Wnd"}).text
+        duration_str_form = duration_data.split("‧")[
+            2
+        ]  ##Gives the duration of the movie
+        duration_split = duration_str_form.split(" ")
+        for item in duration_split:
+            if item in ["", " "]:
+                continue
+            elif item.__contains__("h"):
+                duration_in_min += int("".join(list(item)[:-1:])) * 60
+            elif item.__contains__("m"):
+                duration_in_min += int("".join(list(item)[:-1:]))
+    except Exception:
+        print("error found")
+        duration_in_min = 0
+    finally:
+        print(duration_in_min)
+        return duration_in_min
+
+
 class duplicate:
     """
     to check if a keyword or file already exists
@@ -193,7 +242,7 @@ class duplicate:
         """
         return self.__data_list
 
-    def string_to_folder(self, data_list: list) -> [folder]:
+    def __string_to_folder(self, data_list: list) -> [folder]:
         """
         convert all data in data_list to folder datatype and return as list
         """
@@ -202,7 +251,7 @@ class duplicate:
             folder_list.append(convert(file_data=item).to_folder())
         return folder_list
 
-    def string_to_website(self, data_list: list) -> [website]:
+    def __string_to_website(self, data_list: list) -> [website]:
         """
         convert all data in data_list to website datatype and return as list
         """
@@ -211,7 +260,7 @@ class duplicate:
             website_list.append(convert(file_data=item).to_website())
         return website_list
 
-    def string_to_process(self, data_list: list) -> [process]:
+    def __string_to_process(self, data_list: list) -> [process]:
         """
         convert all data in data_list to process datatype and return as list
         """
@@ -220,7 +269,7 @@ class duplicate:
             process_list.append(convert(file_data=item).to_process())
         return process_list
 
-    def string_to_reminder(self, data_list: list) -> [reminder]:
+    def __string_to_reminder(self, data_list: list) -> [reminder]:
         """
         convert all data in data_list to reminder datatype and return as list
         """
@@ -229,18 +278,29 @@ class duplicate:
             reminder_list.append(convert(file_data=item).to_reminder())
         return reminder_list
 
+    def __string_to_media(self, data_list: list) -> [media]:
+        """
+        convert all data in data_list to media datatype and return as list
+        """
+        media_list = []
+        for item in data_list:
+            media_list.append(convert(file_data=item).to_media())
+        return media_list
+
     def __convert(self, data_type, data_list: list) -> []:
         """
         Convert all data in list into specified dataype and return as list
         """
         if data_type == "process":
-            return self.string_to_process(data_list=data_list)
+            return self.__string_to_process(data_list=data_list)
         elif data_type == "folder":
-            return self.string_to_folder(data_list=data_list)
+            return self.__string_to_folder(data_list=data_list)
         elif data_type == "website":
-            return self.string_to_website(data_list=data_list)
+            return self.__string_to_website(data_list=data_list)
         elif data_type == "reminder":
-            return self.string_to_reminder(data_list=data_list)
+            return self.__string_to_reminder(data_list=data_list)
+        elif data_type == "media":
+            return self.__string_to_media(data_list=data_list)
 
     def is_keyword_exist(self, keyword_list: list) -> bool:
         """

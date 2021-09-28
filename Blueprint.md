@@ -5,9 +5,11 @@
     configure.py
     create_blueprint.py
     data_types.py
+    encryption.py
     file_operation.py
     Folder_fast_access.py
-    Mail_section.py
+    gui_section.py
+    media_section.py
     operations.py
     process_fast_access.py
     Reminder_section.py
@@ -16,15 +18,16 @@
 
 
 ## Data Files
+    categorys.json
     completed_reminder_data.json
     configure.json
     folder_data.json
     log.json
     mail_data.json
+    media_data.json
     process_data.json
     reminder_data.json
     status.json
-    website_data.json
 
 
 
@@ -82,6 +85,16 @@
         def user_section(self) -> bool
 
 
+## create_blueprint.py
+
+    def create_file() -> None
+    def write(lines: [str]) -> None
+        def remove(string: str) -> str
+                    def rem(string: str) -> str
+    def write_methodes() -> None
+    def get_py_files() -> list
+    def write_files() -> None
+
 
 ## data_types.py
 
@@ -89,7 +102,7 @@
     class base_class
         def __init__(self, title: str, location: str, codes: [str]) -> None
         def __str__(self) -> str
-        def __format__(self, format_spec: str) -> str
+        def __format__(self, format_spec: str = None) -> str
         def format(self) -> str
         def to_dictionary(self) -> dict
         def get_title(self) -> str
@@ -129,30 +142,8 @@
         def is_completed(self) -> bool
         def __get_date_time(self)
 
-    class mail
-        def __init__(self, new: bool = False, mail_id: int = 0, from_address: str = None, password: str = None, to_address: str = None, mail_subject: str = None, mail_body: str = None, mail_status: str = "pending", remark: str = None, added_date: datetime = None, sent_date: datetime = None, ) -> None
-        def __str__(self) -> str
-        def __format__(self, format_spec: str = None) -> str
-        def format(self) -> str
-        def __set_date(self, new: bool, added_date: datetime) -> datetime
-        def to_dictionary(self) -> dict
-        def to_string(self) -> str
-        def show(self) -> None
-        def get_id(self) -> int
-        def get_status(self) -> str
-        def get_from_address(self) -> str
-        def get_password(self) -> str
-        def get_to_address(self) -> str
-        def get_subject(self) -> str
-        def get_body(self) -> str
-        def set_status(self, status: str = "completed") -> None
-        def is_completed(self) -> bool
-        def clear_password(self) -> None
-        def set_remark(self, remark: str) -> None
-        def __get_date_time(self) -> datetime
-
     class status
-        def __init__(self, login_type: str = None, reminder_pending: bool = False, reminder_pending_count: int = 0, mail_pending: bool = False, mail_pending_count: int = 0, site_list_count: int = 0, folder_list_count: int = 0, process_list_count: int = 0, ) -> None
+        def __init__(self, login_type: str = None, reminder_pending: bool = False, reminder_pending_count: int = 0, site_list_count: int = 0, folder_list_count: int = 0, process_list_count: int = 0, ) -> None
         def __str__(self) -> None
         def to_string(self) -> str
         def __format__(self, format_spec: str = None) -> str
@@ -160,8 +151,6 @@
         def show(self) -> None
         def to_dictionary(self) -> dict
         def get_login_type(self) -> str
-        def get_mail_pending_status(self) -> bool
-        def get_mail_pending_count(self) -> int
         def get_reminder_pending_status(self) -> bool
         def get_reminder_pending_count(self) -> int
         def get_site_list_count(self) -> int
@@ -170,14 +159,12 @@
         def set_login_type(self, login_type: str) -> None
         def set_reminder_pending_status(self, reminder_status: bool) -> None
         def set_reminder_pending_count(self, reminder_count: int) -> None
-        def set_mail_pending_status(self, mail_status: bool) -> None
-        def set_mail_pending_count(self, mail_count: int) -> None
         def set_site_list_count(self, site_count: int) -> None
         def set_folder_list_count(self, folder_count: int) -> None
         def set_process_list_count(self, process_count: int) -> None
 
     class config
-        def __init__(self, show_curresponding_reminder: bool = True, start_up_mail_check: bool = True, start_up_reminder_check: bool = True, reminder_keywords: [str] = [], website_keywords: [str] = [], process_keywords: [str] = [], status_keywords: [str] = [], mail_keywords: [str] = [], folder_keywords: [str] = [], configure_keywords: [str] = [], ) -> None
+        def __init__(self, show_curresponding_reminder: bool = True, start_up_reminder_check: bool = True, reminder_keywords: [str] = [], website_keywords: [str] = [], process_keywords: [str] = [], status_keywords: [str] = [], folder_keywords: [str] = [], configure_keywords: [str] = [], media_keywords: [str] = [], ) -> None
         def __format__(self, format_spec: str = None) -> str
         def format(self) -> str
         def show(self) -> None
@@ -187,9 +174,9 @@
         def __set_process_keyword(self, keywords: [str]) -> [str]
         def __set_folder_keyword(self, keywords: [str]) -> [str]
         def __set_website_keyword(self, keywords: [str]) -> [str]
-        def __set_mail_keyword(self, keywords: [str]) -> [str]
         def __set_status_keyword(self, keywords: [str]) -> [str]
         def __set_config_keyword(self, keywords: [str]) -> [str]
+        def __set_media_keyword(self, keywords: [str]) -> [str]
         def set_status(self, status_of: str, do_show: bool = True) -> bool
         def add_keyword(self, datatype: str, keyword: str) -> bool
         def remove_keyword(self, datatype: str, keyword: str) -> bool
@@ -201,15 +188,44 @@
         def __str__(self) -> str
         def to_string(self) -> str
 
+    class media
+        def __init__(self, new: bool = False, media_id: int = None, media_name: str = None, category: str = None, media_type: str = None, episodes: int = None, duration: int = None, added_date: datetime = None, rewatched: int = 0, ) -> None
+        def __str__(self) -> str
+        def to_string(self) -> str
+        def __format__(self, format_spec: str = None) -> str
+        def __set_date(self, new: bool, added_date: datetime) -> datetime
+        def __get_date_time(self) -> datetime
+        def to_dictionary(self) -> dict
+        def format(self) -> str
+        def show(self) -> None
+        def get_id(self) -> int
+        def get_name(self) -> str
+        def get_type(self) -> str
+        def get_category(self) -> str
+        def get_episodes(self) -> int
+        def get_duration(self) -> int
+        def get_added_date(self) -> str
+        def get_rewatched(self) -> int
+
     class convert
         def __init__(self, file_data: []) -> None
         def to_reminder(self) -> reminder
-        def to_mail(self) -> mail
         def to_process(self) -> process
         def to_folder(self) -> folder
         def to_website(self) -> website
         def to_status(self) -> status
         def to_config(self) -> config
+        def to_media(self) -> media
+
+
+## encryption.py
+
+
+    class encryption
+        def __init__(self) -> None
+        def __get_encryption_code(self) -> dict
+        def encode(self, data: str) -> str
+        def decode(self, data: str) -> str
 
 
 ## file_operation.py
@@ -218,8 +234,9 @@
     class File
         def __init__(self, file_location: str) -> None
         def __create_file(self, file_location: str) -> None
-        def read_data(self) -> [dict]
+        def read_data(self) -> list
         def append_one_data(self, data_to_append: str) -> bool
+        def append_one_data_string(self, data_to_append: str) -> bool
         def delete_one_data(self, file_data: list, data_to_delete: str) -> bool
         def rewrite_entire_data(self, file_data: list) -> bool
         def empty_file(self) -> bool
@@ -246,29 +263,40 @@
         def user_section(self) -> bool
 
 
-## Mail_section.py
+## gui_section.py
 
 
-    class mail_section(change_status)
+    class add_media_gui
         def __init__(self) -> None
-        def new_mail(self) -> None
-        def __new_mail_read_data(self, mail_type: str) -> None
-        def __configure_mail_phase_1(self, from_address: str, to_address: str, password: str, subject: str, body: str ) -> None
-        def __configure_mail_phase_2(self, new_mail: mail) -> mail
-        def __send_mail(self, new_mail: mail) -> bool
-        def __send_pending_mail(self) -> None
-        def show_mail(self) -> None
-        def __show_mail(self, user_input: str) -> None
-        def delete_mail(self, user_input: str) -> None
-        def __delete_mail_read_data(self, user_input: str) -> None
-        def __delete_all(self) -> None
-        def __delete_mail(self, mail_id: int) -> None
-        def __pending_mail_count(self) -> int
-        def __is_mail_pending(self) -> bool
-        def __change_mail_status(self) -> None
-        def startup_mail_check(self) -> None
-        def __mail_help(self) -> None
+        def __clear_field(self) -> None
+        def __submit_data(self) -> None
+        def __add_duration(self)
+        def __set_episode_count(self)
+
+
+## media_section.py
+
+
+    class media_section
+        def __init__(self) -> None
+        def add_media(self) -> None
+        def get_category_list(self) -> list
+        def get_new_media_id(self) -> int
+        def new_media(self, new_media: media) -> None
+        def show_media_list(self, category: str) -> None
+        def show_media_status(self) -> None
+        def show_category(self) -> None
+        def __is_duplicate(self, new_media: media) -> bool
+        def __add_category(self) -> None
+        def help(self) -> None
         def user_section(self) -> bool
+
+    class add_media_gui
+        def __init__(self) -> None
+        def __clear_field(self) -> None
+        def __submit_data(self) -> None
+        def __add_duration(self)
+        def __set_episode_count(self)
 
 
 ## operations.py
@@ -286,9 +314,10 @@
     def internet_connection() -> None
     def get_date_time() -> datetime
     def show_date_time() -> None
-    def is_mail_id(mail_id: str, mail_site: str = None) -> bool
     def get_date() -> date
     def is_a_website(site: str) -> bool
+    def minutes_to_day_hour_min(time: int)
+    def get_duration_of_movie(movie_name: str, movie_category: str) -> int
 
     class duplicate
         def __init__(self, data_list: list, data_type: str) -> None
@@ -297,6 +326,7 @@
         def string_to_website(self, data_list: list) -> [website]
         def string_to_process(self, data_list: list) -> [process]
         def string_to_reminder(self, data_list: list) -> [reminder]
+        def string_to_media(self, data_list: list) -> [media]
         def __convert(self, data_type, data_list: list) -> []
         def is_keyword_exist(self, keyword_list: list) -> bool
         def is_file_exists(self, location: str) -> bool
